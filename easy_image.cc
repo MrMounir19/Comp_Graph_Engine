@@ -386,8 +386,6 @@ std::istream& img::operator>>(std::istream& in, EasyImage & image)
 
 void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size) {
     double Xmin = lines[0].p1.x; double Xmax=lines[0].p1.x; double Ymin=lines[0].p1.y; double Ymax=lines[0].p1.y;
-    std::cout << lines[0].p1.x << " " << lines[0].p1.y << " " << lines[0].p2.x << " " << lines[1].p2.y << std::endl;
-    std::cout << lines.size() << std::endl;
     for (auto line:lines) {
         if (line.p1.x<Xmin) {Xmin=line.p1.x;}
         if (line.p1.x>Xmax) {Xmax=line.p1.x;}
@@ -398,14 +396,14 @@ void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size) {
         if (line.p2.y<Ymin) {Ymin=line.p2.y;}
         if (line.p2.y>Ymax) {Ymax=line.p2.y;}
     }
-    double ImageX= (double)size*((Xmax-Xmin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
-    double ImageY = (double)size*((Ymax-Ymin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
+    double ImageX= (double)(size)*((Xmax-Xmin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
+    double ImageY = (double)(size)*((Ymax-Ymin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
     double d = 0.95*(ImageX/(Xmax-Xmin));
-    double DCx = d*((Xmin+Xmax)/2);
-    double DCy = d*((Ymin+Ymax)/2);
+    double DCx = d*(Xmin+Xmax)/2;
+    double DCy = d*(Ymin+Ymax)/2;
     double dx = ImageX/2 - DCx;
     double dy = ImageY/2 - DCy;
     for (auto line:lines) {
-        draw_line(int(line.p1.x*d+dx), int(line.p1.y*d+dy), int(line.p2.x*d+dx), int(line.p2.y*d+dy), Color(line.color.red*255, line.color.green*255, line.color.blue*255));
+        draw_line((int)round(line.p1.x*d+dx), (int)round(line.p1.y*d+dy), (int)round(line.p2.x*d+dx), (int)round(line.p2.y*d+dy), Color(line.color.red*255, line.color.green*255, line.color.blue*255));
     }
 }

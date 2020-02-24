@@ -5,6 +5,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <cmath>
 
 img::EasyImage generate_image(const ini::Configuration &configuration)
 {
@@ -16,15 +17,16 @@ img::EasyImage generate_image(const ini::Configuration &configuration)
        img::EasyImage image(size, size);
        for (int i = 0; i < size; i++) {
            for (int j = 0; j < size; j++) {
-               image(i, j).red = (int)(background[0]*255);
-               image(i, j).green = (int)(background[1]*255);
-               image(i, j).blue = (int)(background[2]*255);
+               image(i, j).red = (int)round(background[0]*255);
+               image(i, j).green = (int)round(background[1]*255);
+               image(i, j).blue = (int)round(background[2]*255);
            }
        }
-       L_System lSystem = L_System(input, Color(0,0,0));
+       L_System lSystem = L_System(input, Color(color[0],color[1],color[2]));
        image.draw2Dlines(lSystem.generateLines(), size);
        return image;
    }
+   return img::EasyImage();
 }
 
 int main(int argc, char const* argv[])

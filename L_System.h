@@ -18,7 +18,6 @@ class L_System {
     double S_angle; //start angle
     string initiator;
     unsigned int iterations;
-    double current_angle;
     Color linecolor;
 public:
     L_System(const string input, Color linecolor);
