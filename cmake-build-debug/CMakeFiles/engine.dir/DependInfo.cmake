@@ -4,12 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L2D_Parser/l_parser.cc" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o"
-  "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L_System.cpp" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles/engine.dir/L_System.cpp.o"
-  "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/easy_image.cc" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles/engine.dir/easy_image.cc.o"
-  "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine.cc" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles/engine.dir/engine.cc.o"
-  "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/ini_configuration.cc" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles/engine.dir/ini_configuration.cc.o"
-  "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/line_structs.cpp" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles/engine.dir/line_structs.cpp.o"
+  "/home/mounir/Desktop/Comp_Graph_Engine/L2D_Parser/l_parser.cc" "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o"
+  "/home/mounir/Desktop/Comp_Graph_Engine/L_System.cpp" "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles/engine.dir/L_System.cpp.o"
+  "/home/mounir/Desktop/Comp_Graph_Engine/easy_image.cc" "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles/engine.dir/easy_image.cc.o"
+  "/home/mounir/Desktop/Comp_Graph_Engine/engine.cc" "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles/engine.dir/engine.cc.o"
+  "/home/mounir/Desktop/Comp_Graph_Engine/ini_configuration.cc" "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles/engine.dir/ini_configuration.cc.o"
+  "/home/mounir/Desktop/Comp_Graph_Engine/line_structs.cpp" "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles/engine.dir/line_structs.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

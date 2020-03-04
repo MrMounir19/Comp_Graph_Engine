@@ -26,6 +26,7 @@ img::EasyImage generate_image(const ini::Configuration &configuration)
        image.draw2Dlines(lSystem.generateLines(), size);
        return image;
    }
+
    return img::EasyImage();
 }
 

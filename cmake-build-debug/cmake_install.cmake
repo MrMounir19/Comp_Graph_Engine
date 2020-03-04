@@ -1,4 +1,4 @@
-# Install script for directory: /home/mounir/Desktop/Computer Graphics/Graphic_Engine
+# Install script for directory: /home/mounir/Desktop/Comp_Graph_Engine
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,25 +38,25 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  if(EXISTS "$ENV{DESTDIR}/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine")
+  if(EXISTS "$ENV{DESTDIR}/home/mounir/Desktop/Comp_Graph_Engine/engine" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/mounir/Desktop/Comp_Graph_Engine/engine")
     file(RPATH_CHECK
-         FILE "$ENV{DESTDIR}/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine"
+         FILE "$ENV{DESTDIR}/home/mounir/Desktop/Comp_Graph_Engine/engine"
          RPATH "")
   endif()
   list(APPEND CMAKE_ABSOLUTE_DESTINATION_FILES
-   "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine")
+   "/home/mounir/Desktop/Comp_Graph_Engine/engine")
   if(CMAKE_WARN_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(WARNING "ABSOLUTE path INSTALL DESTINATION : ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-file(INSTALL DESTINATION "/home/mounir/Desktop/Computer Graphics/Graphic_Engine" TYPE EXECUTABLE FILES "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/engine")
-  if(EXISTS "$ENV{DESTDIR}/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine" AND
-     NOT IS_SYMLINK "$ENV{DESTDIR}/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine")
+file(INSTALL DESTINATION "/home/mounir/Desktop/Comp_Graph_Engine" TYPE EXECUTABLE FILES "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/engine")
+  if(EXISTS "$ENV{DESTDIR}/home/mounir/Desktop/Comp_Graph_Engine/engine" AND
+     NOT IS_SYMLINK "$ENV{DESTDIR}/home/mounir/Desktop/Comp_Graph_Engine/engine")
     if(CMAKE_INSTALL_DO_STRIP)
-      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine")
+      execute_process(COMMAND "/usr/bin/strip" "$ENV{DESTDIR}/home/mounir/Desktop/Comp_Graph_Engine/engine")
     endif()
   endif()
 endif()
@@ -69,5 +69,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

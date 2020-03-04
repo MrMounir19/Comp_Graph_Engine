@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L_System.h
+/home/mounir/Desktop/Comp_Graph_Engine/L_System.h
 easy_image.h
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/easy_image.h
+/home/mounir/Desktop/Comp_Graph_Engine/easy_image.h
 set
 -
 string
@@ -16,23 +16,23 @@ string
 map
 -
 
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/easy_image.h
+/home/mounir/Desktop/Comp_Graph_Engine/easy_image.h
 stdint.h
 -
 vector
 -
 line_structs.cpp
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/line_structs.cpp
+/home/mounir/Desktop/Comp_Graph_Engine/line_structs.cpp
 iostream
 -
 
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine.cc
+/home/mounir/Desktop/Comp_Graph_Engine/engine.cc
 easy_image.h
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/easy_image.h
+/home/mounir/Desktop/Comp_Graph_Engine/easy_image.h
 ini_configuration.h
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/ini_configuration.h
+/home/mounir/Desktop/Comp_Graph_Engine/ini_configuration.h
 L_System.h
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L_System.h
+/home/mounir/Desktop/Comp_Graph_Engine/L_System.h
 fstream
 -
 iostream
@@ -41,8 +41,10 @@ stdexcept
 -
 string
 -
+cmath
+-
 
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/ini_configuration.h
+/home/mounir/Desktop/Comp_Graph_Engine/ini_configuration.h
 iostream
 -
 map
@@ -54,7 +56,7 @@ string
 vector
 -
 
-/home/mounir/Desktop/Computer Graphics/Graphic_Engine/line_structs.cpp
+/home/mounir/Desktop/Comp_Graph_Engine/line_structs.cpp
 vector
 -
 

@@ -43,10 +43,10 @@ RM = /snap/clion/103/bin/cmake/linux/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/mounir/Desktop/Computer Graphics/Graphic_Engine"
+CMAKE_SOURCE_DIR = /home/mounir/Desktop/Comp_Graph_Engine
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug"
+CMAKE_BINARY_DIR = /home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/engine.dir/depend.make
@@ -59,81 +59,81 @@ include CMakeFiles/engine.dir/flags.make
 
 CMakeFiles/engine.dir/easy_image.cc.o: CMakeFiles/engine.dir/flags.make
 CMakeFiles/engine.dir/easy_image.cc.o: ../easy_image.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/engine.dir/easy_image.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/easy_image.cc.o -c "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/easy_image.cc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/engine.dir/easy_image.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/easy_image.cc.o -c /home/mounir/Desktop/Comp_Graph_Engine/easy_image.cc
 
 CMakeFiles/engine.dir/easy_image.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/engine.dir/easy_image.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/easy_image.cc" > CMakeFiles/engine.dir/easy_image.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mounir/Desktop/Comp_Graph_Engine/easy_image.cc > CMakeFiles/engine.dir/easy_image.cc.i
 
 CMakeFiles/engine.dir/easy_image.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/engine.dir/easy_image.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/easy_image.cc" -o CMakeFiles/engine.dir/easy_image.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mounir/Desktop/Comp_Graph_Engine/easy_image.cc -o CMakeFiles/engine.dir/easy_image.cc.s
 
 CMakeFiles/engine.dir/engine.cc.o: CMakeFiles/engine.dir/flags.make
 CMakeFiles/engine.dir/engine.cc.o: ../engine.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/engine.dir/engine.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/engine.cc.o -c "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine.cc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/engine.dir/engine.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/engine.cc.o -c /home/mounir/Desktop/Comp_Graph_Engine/engine.cc
 
 CMakeFiles/engine.dir/engine.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/engine.dir/engine.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine.cc" > CMakeFiles/engine.dir/engine.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mounir/Desktop/Comp_Graph_Engine/engine.cc > CMakeFiles/engine.dir/engine.cc.i
 
 CMakeFiles/engine.dir/engine.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/engine.dir/engine.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/engine.cc" -o CMakeFiles/engine.dir/engine.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mounir/Desktop/Comp_Graph_Engine/engine.cc -o CMakeFiles/engine.dir/engine.cc.s
 
 CMakeFiles/engine.dir/ini_configuration.cc.o: CMakeFiles/engine.dir/flags.make
 CMakeFiles/engine.dir/ini_configuration.cc.o: ../ini_configuration.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/engine.dir/ini_configuration.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/ini_configuration.cc.o -c "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/ini_configuration.cc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/engine.dir/ini_configuration.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/ini_configuration.cc.o -c /home/mounir/Desktop/Comp_Graph_Engine/ini_configuration.cc
 
 CMakeFiles/engine.dir/ini_configuration.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/engine.dir/ini_configuration.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/ini_configuration.cc" > CMakeFiles/engine.dir/ini_configuration.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mounir/Desktop/Comp_Graph_Engine/ini_configuration.cc > CMakeFiles/engine.dir/ini_configuration.cc.i
 
 CMakeFiles/engine.dir/ini_configuration.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/engine.dir/ini_configuration.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/ini_configuration.cc" -o CMakeFiles/engine.dir/ini_configuration.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mounir/Desktop/Comp_Graph_Engine/ini_configuration.cc -o CMakeFiles/engine.dir/ini_configuration.cc.s
 
 CMakeFiles/engine.dir/line_structs.cpp.o: CMakeFiles/engine.dir/flags.make
 CMakeFiles/engine.dir/line_structs.cpp.o: ../line_structs.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/engine.dir/line_structs.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/line_structs.cpp.o -c "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/line_structs.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/engine.dir/line_structs.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/line_structs.cpp.o -c /home/mounir/Desktop/Comp_Graph_Engine/line_structs.cpp
 
 CMakeFiles/engine.dir/line_structs.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/engine.dir/line_structs.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/line_structs.cpp" > CMakeFiles/engine.dir/line_structs.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mounir/Desktop/Comp_Graph_Engine/line_structs.cpp > CMakeFiles/engine.dir/line_structs.cpp.i
 
 CMakeFiles/engine.dir/line_structs.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/engine.dir/line_structs.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/line_structs.cpp" -o CMakeFiles/engine.dir/line_structs.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mounir/Desktop/Comp_Graph_Engine/line_structs.cpp -o CMakeFiles/engine.dir/line_structs.cpp.s
 
 CMakeFiles/engine.dir/L_System.cpp.o: CMakeFiles/engine.dir/flags.make
 CMakeFiles/engine.dir/L_System.cpp.o: ../L_System.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/engine.dir/L_System.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/L_System.cpp.o -c "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L_System.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/engine.dir/L_System.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/L_System.cpp.o -c /home/mounir/Desktop/Comp_Graph_Engine/L_System.cpp
 
 CMakeFiles/engine.dir/L_System.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/engine.dir/L_System.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L_System.cpp" > CMakeFiles/engine.dir/L_System.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mounir/Desktop/Comp_Graph_Engine/L_System.cpp > CMakeFiles/engine.dir/L_System.cpp.i
 
 CMakeFiles/engine.dir/L_System.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/engine.dir/L_System.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L_System.cpp" -o CMakeFiles/engine.dir/L_System.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mounir/Desktop/Comp_Graph_Engine/L_System.cpp -o CMakeFiles/engine.dir/L_System.cpp.s
 
 CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o: CMakeFiles/engine.dir/flags.make
 CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o: ../L2D_Parser/l_parser.cc
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o -c "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L2D_Parser/l_parser.cc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o -c /home/mounir/Desktop/Comp_Graph_Engine/L2D_Parser/l_parser.cc
 
 CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L2D_Parser/l_parser.cc" > CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/mounir/Desktop/Comp_Graph_Engine/L2D_Parser/l_parser.cc > CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.i
 
 CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/L2D_Parser/l_parser.cc" -o CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/mounir/Desktop/Comp_Graph_Engine/L2D_Parser/l_parser.cc -o CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.s
 
 # Object files for target engine
 engine_OBJECTS = \
@@ -155,7 +155,7 @@ engine: CMakeFiles/engine.dir/L_System.cpp.o
 engine: CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o
 engine: CMakeFiles/engine.dir/build.make
 engine: CMakeFiles/engine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable engine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable engine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/engine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -168,6 +168,6 @@ CMakeFiles/engine.dir/clean:
 .PHONY : CMakeFiles/engine.dir/clean
 
 CMakeFiles/engine.dir/depend:
-	cd "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug" "/home/mounir/Desktop/Computer Graphics/Graphic_Engine/cmake-build-debug/CMakeFiles/engine.dir/DependInfo.cmake" --color=$(COLOR)
+	cd /home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/mounir/Desktop/Comp_Graph_Engine /home/mounir/Desktop/Comp_Graph_Engine /home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug /home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug /home/mounir/Desktop/Comp_Graph_Engine/cmake-build-debug/CMakeFiles/engine.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/engine.dir/depend
 
