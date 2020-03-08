@@ -1,5 +1,5 @@
-
 #include <vector>
+
 struct Color {
     double red;
     double green;
@@ -21,3 +21,5 @@ struct Line2D {
 };
 
 using Lines2D = std::vector<Line2D>;
+
+

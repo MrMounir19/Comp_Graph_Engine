@@ -27,6 +27,7 @@
  */
 namespace img
 {
+    std::vector<double> getMax(Lines2D lines);
 	/**
 	 * \brief This class represents the color of a pixel in an img::EasyImage object
 	 */
@@ -222,7 +223,9 @@ namespace img
 			 */
 			void draw_line(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, Color color);
 
-			void draw2Dlines(const Lines2D &lines, const int size);
+			void draw2Dlines(const Lines2D &lines, const int size, double Xmin, double Xmax, double Ymin, double Ymax);
+
+
 		private:
 			friend std::istream& operator>>(std::istream& in, EasyImage & image);
 			/**

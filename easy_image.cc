@@ -384,18 +384,7 @@ std::istream& img::operator>>(std::istream& in, EasyImage & image)
 
 //MOUNIR
 
-void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size) {
-    double Xmin = lines[0].p1.x; double Xmax=lines[0].p1.x; double Ymin=lines[0].p1.y; double Ymax=lines[0].p1.y;
-    for (auto line:lines) {
-        if (line.p1.x<Xmin) {Xmin=line.p1.x;}
-        if (line.p1.x>Xmax) {Xmax=line.p1.x;}
-        if (line.p1.y<Ymin) {Ymin=line.p1.y;}
-        if (line.p1.y>Ymax) {Ymax=line.p1.y;}
-        if (line.p2.x<Xmin) {Xmin=line.p2.x;}
-        if (line.p2.x>Xmax) {Xmax=line.p2.x;}
-        if (line.p2.y<Ymin) {Ymin=line.p2.y;}
-        if (line.p2.y>Ymax) {Ymax=line.p2.y;}
-    }
+void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size, double Xmin, double Xmax, double Ymin, double Ymax) {
     double ImageX= (double)(size)*((Xmax-Xmin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
     double ImageY = (double)(size)*((Ymax-Ymin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
     double d = 0.95*(ImageX/(Xmax-Xmin));
@@ -406,4 +395,26 @@ void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size) {
     for (auto line:lines) {
         draw_line((int)round(line.p1.x*d+dx), (int)round(line.p1.y*d+dy), (int)round(line.p2.x*d+dx), (int)round(line.p2.y*d+dy), Color(line.color.red*255, line.color.green*255, line.color.blue*255));
     }
+}
+
+std::vector<double> img::getMax(Lines2D lines) {
+    double Xmin = lines[0].p1.x; double Xmax=lines[0].p1.x; double Ymin=lines[0].p1.y; double Ymax=lines[0].p1.y;
+    double Xratio = 1; double Yratio = 1;
+    for (auto line:lines) {
+        if (line.p1.x<Xmin) {Xmin=line.p1.x;}
+        if (line.p1.x>Xmax) {Xmax=line.p1.x;}
+        if (line.p1.y<Ymin) {Ymin=line.p1.y;}
+        if (line.p1.y>Ymax) {Ymax=line.p1.y;}
+        if (line.p2.x<Xmin) {Xmin=line.p2.x;}
+        if (line.p2.x>Xmax) {Xmax=line.p2.x;}
+        if (line.p2.y<Ymin) {Ymin=line.p2.y;}
+        if (line.p2.y>Ymax) {Ymax=line.p2.y;}
+    }
+    if ((Xmax-Xmin) < (Ymax-Ymin)) {
+        Xratio = (Xmax-Xmin)/(Ymax-Ymin);
+    }
+    else if ((Xmax-Xmin) > (Ymax-Ymin)) {
+        Yratio = (Ymax-Ymin)/(Xmax-Xmin);
+    }
+    return {Xmin, Xmax, Ymin, Ymax, Xratio, Yratio};
 }

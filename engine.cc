@@ -14,16 +14,12 @@ img::EasyImage generate_image(const ini::Configuration &configuration)
        std::vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
        std::vector<double> color = configuration["2DLSystem"]["color"].as_double_tuple_or_die();
        std::string input = configuration["2DLSystem"]["inputfile"].as_string_or_die();
-       img::EasyImage image(size, size);
-       for (int i = 0; i < size; i++) {
-           for (int j = 0; j < size; j++) {
-               image(i, j).red = (int)round(background[0]*255);
-               image(i, j).green = (int)round(background[1]*255);
-               image(i, j).blue = (int)round(background[2]*255);
-           }
-       }
        L_System lSystem = L_System(input, Color(color[0],color[1],color[2]));
-       image.draw2Dlines(lSystem.generateLines(), size);
+       Lines2D lines = lSystem.generateLines();
+       vector<double> max = img::getMax(lines);
+       std::cout << (int)(max[4]*size) << endl;
+       img::EasyImage image((int)(max[4]*size), (int)(max[5]*size), img::Color((int)round(background[0]*255),(int)round(background[1]*255),(int)round(background[2]*255)));
+       image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3]);
        return image;
    }
 

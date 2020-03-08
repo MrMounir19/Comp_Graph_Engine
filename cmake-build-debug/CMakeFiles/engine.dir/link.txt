@@ -1,1 +1,0 @@
-/usr/bin/c++   -Wall -Wextra -fstack-protector-all -std=c++14 -g -Wall -Wextra -fstack-protector-all -std=c++14 -pg -g   CMakeFiles/engine.dir/easy_image.cc.o CMakeFiles/engine.dir/engine.cc.o CMakeFiles/engine.dir/ini_configuration.cc.o CMakeFiles/engine.dir/line_structs.cpp.o CMakeFiles/engine.dir/L_System.cpp.o CMakeFiles/engine.dir/L2D_Parser/l_parser.cc.o  -o engine 
