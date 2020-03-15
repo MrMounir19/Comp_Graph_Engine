@@ -17,7 +17,8 @@ set(engine_sources
 	easy_image.cc
 	engine.cc
 	ini_configuration.cc
-        line_structs.cpp L_System.cpp L_System.h L2D_Parser/l_parser.cc L2D_Parser/l_parser.h)
+        line_structs.cpp L_System/L_System.cpp L_System/L_System.h L2D_Parser/l_parser.cc L2D_Parser/l_parser.h 3D-Lijntekeningen/Figure.cpp 3D-Lijntekeningen/Figure.h
+		vector3d.h vector3d.cc)
 
 ############################################################
 # Create an executable

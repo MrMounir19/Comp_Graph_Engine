@@ -18,7 +18,7 @@
 #include "easy_image.h"
 #include <algorithm>
 #include <assert.h>
-#include <math.h>
+#include <cmath>
 #include <iostream>
 
 namespace
@@ -397,7 +397,7 @@ void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size, double Xm
     }
 }
 
-std::vector<double> img::getMax(Lines2D lines) {
+std::vector<double> img::getMax(Lines2D& lines) {
     double Xmin = lines[0].p1.x; double Xmax=lines[0].p1.x; double Ymin=lines[0].p1.y; double Ymax=lines[0].p1.y;
     double Xratio = 1; double Yratio = 1;
     for (auto line:lines) {

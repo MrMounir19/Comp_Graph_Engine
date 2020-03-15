@@ -27,7 +27,7 @@
  */
 namespace img
 {
-    std::vector<double> getMax(Lines2D lines);
+    std::vector<double> getMax(Lines2D& lines);
 	/**
 	 * \brief This class represents the color of a pixel in an img::EasyImage object
 	 */

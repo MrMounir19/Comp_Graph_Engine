@@ -3,7 +3,7 @@
 //
 #include <fstream>
 #include "L_System.h"
-#include "L2D_Parser/l_parser.h"
+#include "../L2D_Parser/l_parser.h"
 #include <cmath>
 
 const double pi = 3.14159265358979323846264338327950288;

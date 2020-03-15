@@ -1,24 +1,62 @@
 #include "easy_image.h"
 #include "ini_configuration.h"
-#include "L_System.h"
+#include "L_System/L_System.h"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <cmath>
+#include "3D-Lijntekeningen/Figure.h"
 
 img::EasyImage generate_image(const ini::Configuration &configuration)
 {
    if (configuration["General"]["type"].as_string_or_die() == "2DLSystem") {
        int size = configuration["General"]["size"].as_int_or_die();
-       std::vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
-       std::vector<double> color = configuration["2DLSystem"]["color"].as_double_tuple_or_die();
-       std::string input = configuration["2DLSystem"]["inputfile"].as_string_or_die();
+       vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
+       vector<double> color = configuration["2DLSystem"]["color"].as_double_tuple_or_die();
+       string input = configuration["2DLSystem"]["inputfile"].as_string_or_die();
        L_System lSystem = L_System(input, Color(color[0],color[1],color[2]));
        Lines2D lines = lSystem.generateLines();
        vector<double> max = img::getMax(lines);
-       std::cout << (int)(max[4]*size) << endl;
        img::EasyImage image((int)(max[4]*size), (int)(max[5]*size), img::Color((int)round(background[0]*255),(int)round(background[1]*255),(int)round(background[2]*255)));
+       image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3]);
+       return image;
+   }
+   else if (configuration["General"]["type"].as_string_or_die() == "Wireframe") {
+       int size = configuration["General"]["size"].as_int_or_die();
+       vector<double> eye = configuration["General"]["eye"].as_double_tuple_or_die();
+       vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
+       int nrFigures = configuration["General"]["nrFigures"].as_int_or_die();
+       Lines2D lines = {};
+       for (int i = 0; i<nrFigures; i++) {
+           string figure = "Figure" + to_string(i);
+           if (configuration[figure]["type"].as_string_or_die() == "LineDrawing") {
+               double scale = configuration[figure]["scale"].as_double_or_die();
+               double rX = configuration[figure]["rotateX"].as_double_or_die();
+               double rY = configuration[figure]["rotateY"].as_double_or_die();
+               double rZ = configuration[figure]["rotateZ"].as_double_or_die();
+               vector<double> center = configuration[figure]["center"].as_double_tuple_or_die();
+               vector<double> color = configuration[figure]["color"].as_double_tuple_or_die();
+               int nrPoints = configuration[figure]["nrPoints"].as_int_or_die();
+               int nrLines = configuration[figure]["nrLines"].as_int_or_die();
+               Figure newfigure = Figure(color);
+               for (int p = 0; p < nrPoints; p++) {
+                   newfigure.addPoint(configuration[figure]["point" + to_string(p)].as_double_tuple_or_die());
+               }
+               for (int l = 0; l < nrLines; l++) {
+                   newfigure.addFace(configuration[figure]["line" + to_string(l)].as_int_tuple_or_die());
+               }
+               newfigure.applyTransformation(newfigure.scaleFigure(scale));
+               newfigure.applyTransformation(newfigure.rotateX(rX));
+               newfigure.applyTransformation(newfigure.rotateY(rY));
+               newfigure.applyTransformation(newfigure.rotateZ(rZ));
+               newfigure.applyTransformation(newfigure.translate(Vector3D::vector(-center[0], -center[1], -center[2])));
+               Lines2D newlines = newfigure.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+               lines.insert(lines.end(), newlines.begin(), newlines.end());
+           }
+       }
+       vector<double> max = img::getMax(lines);
+       img::EasyImage image((int)round(max[4]*size), (int)round(max[5]*size), img::Color((int)round(background[0]*255),(int)round(background[1]*255),(int)round(background[2]*255)));
        image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3]);
        return image;
    }

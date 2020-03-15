@@ -1,13 +1,14 @@
 //
 // Created by mounir on 24.02.20.
 //
-#include "easy_image.h"
-#include <set>
-#include <string>
-#include <map>
+
 using namespace std;
 #ifndef ENGINE_L_SYSTEM_H
 #define ENGINE_L_SYSTEM_H
+#include "../line_structs.cpp"
+#include <set>
+#include <string>
+#include <map>
 
 class L_System {
     set<char> Alphabet;
