@@ -260,7 +260,6 @@ Figure createDodecahedron(Color c) {
     std::vector<Face> dodecaFaces;
 
     for (auto face:newFigure.getFaces()) {
-        std::cout << face.point_indexes[0]+1 << " " << face.point_indexes[1]+1 << " " << face.point_indexes[2]+1 << std::endl;
         Vector3D p1 = newFigure.getPoints()[face.point_indexes[0]];
         Vector3D p2 = newFigure.getPoints()[face.point_indexes[1]];
         Vector3D p3 = newFigure.getPoints()[face.point_indexes[2]];
