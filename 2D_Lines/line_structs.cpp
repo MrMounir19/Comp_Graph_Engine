@@ -3,6 +3,7 @@
 #ifndef ENGINE_LINESTRUCTS
 #define ENGINE_LINESTRUCTS
 #include <vector>
+#include <limits>
 
 struct Color {
     double red;
@@ -26,8 +27,27 @@ struct Line2D {
     Point2D p1;
     Point2D p2;
     Color color;
-    Line2D (Point2D P1, Point2D P2, Color c):p1(P1), p2(P2), color(c) {}
+    Line2D (Point2D P1, Point2D P2, Color c, double Z1, double Z2):p1(P1), p2(P2), color(c), z1(Z1), z2(Z2)  {}
+    double z1;
+    double z2;
 };
+
+
+
+struct ZBuffer {
+    std::vector<std::vector<double>> buffer;
+    ZBuffer(unsigned int width, unsigned int height ) {
+        double posInf = std::numeric_limits<double>::infinity();
+        std::vector<double> rij;
+        for (unsigned int w = 0; w < width; w++) {
+            rij.push_back(posInf);
+        }
+        for (unsigned int h = 0; h < height; h++) {
+            buffer.push_back(rij);
+        }
+    }
+};
+
 
 using Lines2D = std::vector<Line2D>;
 

@@ -1,6 +1,4 @@
-//
-// Created by mounir on 24.02.20.
-//
+
 #include <fstream>
 #include "L_System.h"
 #include "../L2D_Parser/l_parser.h"
@@ -43,14 +41,14 @@ const Lines2D L_System::generateLines() {
     for (auto symbol:finalstring) {
         if (symbol=='+') {
             if (last_change.first != position.first or last_change.second != position.second) {
-            lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor));}
+            lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor,0,0));}
             current_angle += angle;
             last_change.first = position.first;
             last_change.second = position.second;
     }
         else if (symbol=='-') {
             if (last_change.first != position.first or last_change.second != position.second) {
-            lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor)); }
+            lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor,0,0)); }
             current_angle -= angle;
             last_change.first = position.first;
             last_change.second = position.second;
@@ -60,7 +58,7 @@ const Lines2D L_System::generateLines() {
         }
         else if (symbol==')') {
             if (last_change.first != position.first or last_change.second != position.second) {
-                lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor)); }
+                lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor,0,0)); }
             current_angle = stack[stack.size()-1].second;
             position = stack[stack.size()-1].first;
             last_change = position;
@@ -69,7 +67,7 @@ const Lines2D L_System::generateLines() {
         else {
             if (!draw.at(symbol)) {
                 if (last_change.first != position.first or last_change.second != position.second) {
-                lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor)); }
+                lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor,0,0)); }
                 last_change = position;
                 last_change.first += cos(current_angle*pi/180.0);
                 last_change.second += sin(current_angle*pi/180.0);
@@ -77,7 +75,7 @@ const Lines2D L_System::generateLines() {
             position.first += cos(current_angle*(pi/180.0));
             position.second += sin(current_angle*(pi/180.0));
         }
-        lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor));
+        lines.push_back(Line2D(Point2D(last_change.first, last_change.second), Point2D(position.first, position.second), linecolor,0,0));
     }
     return lines;
 }

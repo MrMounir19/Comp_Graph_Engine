@@ -253,6 +253,7 @@ void img::EasyImage::draw_line(unsigned int x0, unsigned int y0, unsigned int x1
 		}
 	}
 }
+
 std::ostream& img::operator<<(std::ostream& out, EasyImage const& image)
 {
 
@@ -384,7 +385,7 @@ std::istream& img::operator>>(std::istream& in, EasyImage & image)
 
 //MOUNIR
 
-void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size, double Xmin, double Xmax, double Ymin, double Ymax) {
+void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size, double Xmin, double Xmax, double Ymin, double Ymax, bool zBuffer) {
     double ImageX= (double)(size)*((Xmax-Xmin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
     double ImageY = (double)(size)*((Ymax-Ymin)/(std::max((Xmax-Xmin), (Ymax-Ymin))));
     double d = 0.95*(ImageX/(Xmax-Xmin));
@@ -392,8 +393,20 @@ void img::EasyImage::draw2Dlines(const Lines2D &lines, const int size, double Xm
     double DCy = d*(Ymin+Ymax)/2;
     double dx = ImageX/2 - DCx;
     double dy = ImageY/2 - DCy;
-    for (auto line:lines) {
-        draw_line((int)round(line.p1.x*d+dx), (int)round(line.p1.y*d+dy), (int)round(line.p2.x*d+dx), (int)round(line.p2.y*d+dy), Color(line.color.red*255, line.color.green*255, line.color.blue*255));
+    if (!zBuffer) {
+        for (auto line:lines) {
+            draw_line((int) round(line.p1.x * d + dx), (int) round(line.p1.y * d + dy), (int) round(line.p2.x * d + dx),
+                      (int) round(line.p2.y * d + dy),
+                      Color(line.color.red * 255, line.color.green * 255, line.color.blue * 255));
+        }
+    }
+    else {
+        ZBuffer buf = ZBuffer(get_width(), get_height());
+        for (auto line:lines) {
+            draw_zbuf_line(buf, (int) round(line.p1.x * d + dx), (int) round(line.p1.y * d + dy), (int) round(line.p2.x * d + dx),
+                      (int) round(line.p2.y * d + dy),
+                      Color(line.color.red * 255, line.color.green * 255, line.color.blue * 255), line.z1, line.z2);
+        }
     }
 }
 
@@ -417,4 +430,75 @@ std::vector<double> img::getMax(Lines2D& lines) {
         Yratio = (Ymax-Ymin)/(Xmax-Xmin);
     }
     return {Xmin, Xmax, Ymin, Ymax, Xratio, Yratio};
+}
+
+//
+void img::EasyImage::draw_zbuf_line(ZBuffer &buf, unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, Color color, double z0, double z1) {
+    assert(x0 < this->width && y0 < this->height);
+    assert(x1 < this->width && y1 < this->height);
+    if (x0 == x1) {
+        //special case for x0 == x1
+        if (y0 > y1) {
+            std::swap(y0, y1);
+            std::swap(z0, z1);
+        }
+        for (unsigned int i = std::min(y0, y1); i <= std::max(y0, y1); i++) {
+            if (findInvZValue(y0, z0, y1, z1, i) < buf.buffer[i][x0]) {
+                (*this)(x0, i) = color;
+                buf.buffer[i][x0] = findInvZValue(y0, z0, y1, z1, i);
+            }
+        }
+    } else if (y0 == y1) {
+        if (x0 > x1) {
+            std::swap(x0, x1);
+            std::swap(z0, z1);
+        }
+        for (unsigned int i = std::min(x0, x1); i <= std::max(x0, x1); i++) {
+            if (findInvZValue(x0, z0, x1, z1, i) < buf.buffer[y0][i]) {
+                (*this)(i, y0) = color;
+                buf.buffer[y0][i] = findInvZValue(x0, z0, x1, z1, i);
+            }
+        }
+    } else {
+        if (x0 > x1) {
+            //flip points if x1>x0: we want x0 to have the lowest value
+            std::swap(x0, x1);
+            std::swap(y0, y1);
+            std::swap(z0, z1);
+        }
+        double m = ((double) y1 - (double) y0) / ((double) x1 - (double) x0);
+        if (-1.0 <= m && m <= 1.0) {
+            for (unsigned int i = 0; i <= (x1 - x0); i++) {
+                if (findInvZValue(x0, z0, x1, z1, x0 + i) < buf.buffer[(unsigned int) round(y0 + m * i)][x0 + i]) {
+                    (*this)(x0 + i, (unsigned int) round(y0 + m * i)) = color;
+                    buf.buffer[(unsigned int) round(y0 + m * i)][x0 + i] = findInvZValue(x0, z0, x1, z1, x0 + i);
+                }
+            }
+        } else if (m > 1.0) {
+            for (unsigned int i = 0; i <= (y1 - y0); i++) {
+                if (findInvZValue(x0, z0, x1, z1, (unsigned int) round(x0 + (i / m))) <
+                    buf.buffer[y0 + i][(unsigned int) round(x0 + (i / m))]) {
+                    (*this)((unsigned int) round(x0 + (i / m)), y0 + i) = color;
+                    buf.buffer[y0 + i][(unsigned int) round(x0 + (i / m))] = findInvZValue(x0, z0, x1, z1,
+                                                                                           (unsigned int) round(
+                                                                                                   x0 + (i / m)));
+                }
+            }
+        } else if (m < -1.0) {
+            for (unsigned int i = 0; i <= (y0 - y1); i++) {
+                if (findInvZValue(x0, z0, x1, z1, (unsigned int) round(x0 - (i / m))) <
+                    buf.buffer[y0 - i][(unsigned int) round(x0 - (i / m))]) {
+                    (*this)((unsigned int) round(x0 - (i / m)), y0 - i) = color;
+                    buf.buffer[y0 - i][(unsigned int) round(x0 - (i / m))] = findInvZValue(x0, z0, x1, z1,
+                                                                                           (unsigned int) round(
+                                                                                                   x0 - (i / m)));
+                }
+            }
+        }
+    }
+}
+
+double findInvZValue(double xA, double zA, double xB, double zB, double xI) {
+    double p = (xB-xI)/(xB-xA);
+    return  (p/zA)+(1-p)/zB;
 }

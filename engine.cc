@@ -21,7 +21,7 @@ img::EasyImage generate_image(const ini::Configuration &configuration) {
        lines = lSystem.generateLines();
    }
    //--------------------------------------------------------------------------------------
-   else if (configuration["General"]["type"].as_string_or_die() == "Wireframe") {
+   else if (configuration["General"]["type"].as_string_or_die() == "Wireframe" or configuration["General"]["type"].as_string_or_die() == "ZBufferedWireframe") {
        check = true;
        vector<double> eye = configuration["General"]["eye"].as_double_tuple_or_die();
        int nrFigures = configuration["General"]["nrFigures"].as_int_or_die();
@@ -94,7 +94,7 @@ img::EasyImage generate_image(const ini::Configuration &configuration) {
        img::EasyImage image((int) round(max[4] * size), (int) round(max[5] * size),
                img::Color((int) round(background[0] * 255), (int) round(background[1] * 255),
                                        (int) round(background[2] * 255)));
-       image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3]);
+       image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3], configuration["General"]["type"].as_string_or_die() == "ZBufferedWireframe");
        return image;
    }
    return img::EasyImage();

@@ -100,16 +100,17 @@ Lines2D Figure::doProjection(const Vector3D &eyepoint, const double d) {
         if (face.point_indexes.size() == 2) {
             Point2D p1 = doProjection(d, points[face.point_indexes[0]]);
             Point2D p2 = doProjection(d, points[face.point_indexes[1]]);
-            lines.push_back(Line2D(p1,p2,color));
+            lines.push_back(Line2D(p1,p2,color, points[face.point_indexes[0]].z, points[face.point_indexes[1]].z));
         }
         else {
             int size = face.point_indexes.size();
             for (int i=0; i < size-1; i++) {
                 Point2D p1 = doProjection(d, points[face.point_indexes[i]]);
                 Point2D p2 = doProjection(d, points[face.point_indexes[i+1]]);
-                lines.push_back(Line2D(p1,p2,color));
+                lines.push_back(Line2D(p1,p2, color, points[face.point_indexes[i]].z, points[face.point_indexes[i+1]].z));
             }
-            lines.push_back(Line2D(doProjection(d, points[face.point_indexes[0]]), doProjection(d, points[face.point_indexes[size-1]]), color));
+            lines.push_back(Line2D(doProjection(d, points[face.point_indexes[0]]), doProjection(d, points[face.point_indexes[size-1]]), color,
+                    points[face.point_indexes[0]].z, points[face.point_indexes[size-1]].z));
         }
     }
     return lines;
