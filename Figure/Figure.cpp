@@ -153,6 +153,17 @@ void Figure::setFaces(std::vector<Face> faces) {
     Figure::faces = faces;
 }
 
+void Figure::triangulate() {
+    std::vector<Face> newFaces;
+    while (!faces.empty()) {
+        for (int i = 1; i < (int)faces[0].point_indexes.size()-1; i++) {
+            newFaces.push_back(Face({faces[0].point_indexes[0],faces[0].point_indexes[i],faces[0].point_indexes[i+1]}));
+        }
+        faces.erase(faces.begin());
+    }
+    faces = newFaces;
+}
+
 
 //Works
 Figure createCube(Color c) {

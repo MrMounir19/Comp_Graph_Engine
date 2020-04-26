@@ -25,6 +25,7 @@ public:
     void addPoint(Vector3D point);
     void setPoints(const std::vector<Vector3D> points);
     void setFaces(const std::vector<Face> faces);
+    void triangulate();
     std::vector<Vector3D> &getPoints();
     std::vector<Face> &getFaces();
     Matrix scaleFigure(const double scale);

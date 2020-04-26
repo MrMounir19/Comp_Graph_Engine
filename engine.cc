@@ -76,6 +76,7 @@ img::EasyImage generate_image(const ini::Configuration &configuration) {
                newfigure = lsystem3D.generateFigure();
            }
            //---------------------------
+           newfigure.triangulate();
            newfigure.applyTransformation(newfigure.scaleFigure(scale));
            newfigure.applyTransformation(newfigure.rotateX(rX));
            newfigure.applyTransformation(newfigure.rotateY(rY));
