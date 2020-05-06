@@ -20,6 +20,7 @@
 #include <stdint.h>
 #include <vector>
 #include "../2D_Lines/line_structs.cpp"
+#include "../vector3d/vector3d.h"
 #include <iostream>
 #define le32toh(x) (x)
 /**

@@ -5,6 +5,7 @@
 #include "Figure.h"
 #include <cmath>
 
+
 const double PI = 3.14159265358979323846264338327950288;
 
 Matrix Figure::scaleFigure(const double scale) {
@@ -156,12 +157,66 @@ void Figure::setFaces(std::vector<Face> faces) {
 void Figure::triangulate() {
     std::vector<Face> newFaces;
     while (!faces.empty()) {
-        for (int i = 1; i < (int)faces[0].point_indexes.size()-1; i++) {
-            newFaces.push_back(Face({faces[0].point_indexes[0],faces[0].point_indexes[i],faces[0].point_indexes[i+1]}));
+        if (faces[0].point_indexes.size() > 3) {
+            for (int i = 1; i < (int) faces[0].point_indexes.size() - 1; i++) {
+                newFaces.push_back(
+                        Face({faces[0].point_indexes[0], faces[0].point_indexes[i], faces[0].point_indexes[i + 1]}));
+            }
         }
         faces.erase(faces.begin());
     }
     faces = newFaces;
+}
+
+void Figure::draw_zbuf_triag(ZBuffer &buf, img::EasyImage &image, double d, double dx, double dy) {
+    for (auto face:faces) {
+        Vector3D A = points[face.point_indexes[0]];
+        Vector3D B = points[face.point_indexes[1]];
+        Vector3D C = points[face.point_indexes[2]];
+        Point2D a(((d*A.x) / -A.z) + dx, ((d*A.y) / -A.z) + dy);
+        Point2D b(((d*B.x) / -B.z) + dx, ((d*B.y) / -B.z) + dy);
+        Point2D c(((d*C.x) / -C.z) + dx, ((d*C.y) / -C.z) + dy);
+        Point2D g((a.x + b.x + c.x)/3, (a.y + b.y + c.y)/3);
+        double InvZg = 1/(3*A.z) + 1/(3*B.z)  + 1/(3*C.z);
+        Vector3D u = Vector3D::vector(B.x-A.x, B.y-A.y, B.z-A.z);
+        Vector3D v = Vector3D::vector(C.x-A.x, C.y-A.y, C.z-A.z);
+        Vector3D w = Vector3D::vector(u.y*v.z-u.z*v.y, u.z*v.x-u.x*v.z, u.x*v.y-u.y*v.x);
+        double k = w.x*A.x + w.y*A.y + w.z*A.z;
+        double dzdx = w.x/(-d*k);
+        double dzdy = w.y/(-d*k);
+        int Ymin = (int) round(getMin(a.y, b.y, c.y));
+        int Ymax = (int) round(getMax(a.y, b.y, c.y));
+
+        for (int y = Ymin; y <= Ymax; y++) {
+            //AB, AC, BC
+            std::vector<double> xLs = {std::numeric_limits<double>::infinity(),std::numeric_limits<double>::infinity(),std::numeric_limits<double>::infinity()};
+            std::vector<double> xRs = {-std::numeric_limits<double>::infinity(),-std::numeric_limits<double>::infinity(),-std::numeric_limits<double>::infinity()};
+            //AB
+            if ((y-round(a.y))*(y-round(b.y)) <= 0.0 and round(a.y) != round(b.y)) {
+                xLs[0] = round(b.x) + (round(a.x)-round(b.x))*(y-round(b.y))/(round(a.y)-round(b.y));
+                xRs[0] = round(b.x) + (round(a.x)-round(b.x))*(y-round(b.y))/(round(a.y)-round(b.y));
+            }
+            //AC
+            if ((y-round(a.y))*(y-round(c.y)) <= 0.0 and round(a.y) != round(c.y)) {
+                xLs[1] = round(c.x) + (round(a.x)-round(c.x))*(y-round(c.y))/(round(a.y)-round(c.y));
+                xRs[1] = round(c.x) + (round(a.x)-round(c.x))*(y-round(c.y))/(round(a.y)-round(c.y));
+            }
+            //BC
+            if ((y-round(b.y))*(y-round(c.y)) <= 0.0 and round(b.y) != round(c.y)) {
+                xLs[2] = round(c.x) + (round(b.x)-round(c.x))*(y-round(c.y))/(round(b.y)-round(c.y));
+                xRs[2] = round(c.x) + (round(b.x)-round(c.x))*(y-round(c.y))/(round(b.y)-round(c.y));
+            }
+            int xL = (int)round(getMin(xLs[0], xLs[1], xLs[2]));
+            int xR = (int)round(getMax(xRs[0], xRs[1], xRs[2]));
+            for (int x=xL; x < xR; x++) {
+                double invZ = 1.0001*InvZg + (x-g.x)*dzdx + (y-g.y)*dzdy;
+                if (invZ < buf.buffer[y][x]) {
+                    image(x, y) = img::Color(color.red * 255, color.green * 255, color.blue * 255);
+                    buf.buffer[y][x] = invZ;
+                }
+            }
+        }
+    }
 }
 
 
@@ -381,17 +436,35 @@ Figure createCylinder(Color c, const int n, const double h) {
         index += 2;
     }
 
+    newFigure.addFace({});
+    newFigure.addFace({});
+    int size = newFigure.getPoints().size();
+    int facessize = newFigure.getFaces().size();
+    for (int i=0; i < size; i+=2) {
+        newFigure.getFaces()[facessize].point_indexes.push_back(i);
+        newFigure.getFaces()[facessize+1].point_indexes.push_back(i+1);
+    }
+    //std::cout << newFigure.getFaces()[facessize].point_indexes.size() << std::endl;
+    //std::cout << newFigure.getFaces()[facessize+1].point_indexes.size() << std::endl;
+    std::cout << " " << std::endl;
+    //std::cout << "bug" << std::endl;
     return newFigure;
 }
 
-Figure createTorus(Color c, const double r, const double R, const int n, const int m) {
+Figure createTorus(Color c, const double r, const double R, const int n, const int m, bool triangulate) {
     Figure newFigure(c);
     for (int i=0; i < n; i++) {
         for (int j=0; j<m; j++) {
             double u = 2*i*PI/n;
             double v = 2*j*PI/m;
             newFigure.addPoint(createTorusPoint(r, R, u, v));
-            newFigure.addFace({(i*m+j) , (((i+1)%n)*m+j) % (n*m) , (((i+1)%n)*m+((j+1)%m))%(n*m) , (i*m+((j+1)%m))});
+            if (triangulate) {
+                newFigure.addFace({(i * m + j), (((i + 1) % n) * m + j) % (n * m), (((i + 1) % n) * m + ((j + 1) % m)) % (n * m)});
+                newFigure.addFace({(i * m + j), (((i + 1) % n) * m + ((j + 1) % m)) % (n * m), (i * m + ((j + 1) % m))});
+            }
+            else {
+                newFigure.addFace({(i * m + j), (((i + 1) % n) * m + j) % (n * m), (((i + 1) % n) * m + ((j + 1) % m)) % (n * m),(i * m + ((j + 1) % m))});
+            }
         }
     }
     return newFigure;
@@ -404,6 +477,12 @@ Vector3D createTorusPoint(double r, double R, const double u, const double v) {
     return Vector3D::point(x,y,z);
 }
 
+double getMin(double a, double b, double c) {
+    double minimum = std::min(a,b);
+    return std::min(minimum, c);
+}
 
-
-
+double getMax(double a, double b, double c) {
+    double maximum = std::max(a,b);
+    return std::max(maximum, c);
+}

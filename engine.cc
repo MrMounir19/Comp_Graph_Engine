@@ -9,94 +9,189 @@
 #include "Figure/Figure.h"
 #include "3D_L_System/L_System_3D.h"
 
+img::EasyImage generate_2DLsystem(const ini::Configuration &configuration) {
+    Lines2D lines;
+    vector<double> color = configuration["2DLSystem"]["color"].as_double_tuple_or_die();
+    string input = configuration["2DLSystem"]["inputfile"].as_string_or_die();
+    L_System lSystem = L_System(input, Color(color[0],color[1],color[2]));
+    lines = lSystem.generateLines();
+    int size = configuration["General"]["size"].as_int_or_die();
+    vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
+    vector<double> max = img::getMax(lines);
+    img::EasyImage image((int) round(max[4] * size), (int) round(max[5] * size),
+                         img::Color((int) round(background[0] * 255), (int) round(background[1] * 255),
+                                    (int) round(background[2] * 255)));
+
+    image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3], false);
+    return image;
+}
+
+img::EasyImage generate_Wireframe(const ini::Configuration &configuration) {        //Ook zbuffered
+    Lines2D lines;
+    string imagetype = configuration["General"]["type"].as_string_or_die();
+    vector<double> eye = configuration["General"]["eye"].as_double_tuple_or_die();
+    int nrFigures = configuration["General"]["nrFigures"].as_int_or_die();
+    for (int i = 0; i<nrFigures; i++) {
+        string figure = "Figure" + to_string(i);
+        string type = configuration[figure]["type"].as_string_or_die();
+        double scale = configuration[figure]["scale"].as_double_or_die();
+        double rX = configuration[figure]["rotateX"].as_double_or_die();
+        double rY = configuration[figure]["rotateY"].as_double_or_die();
+        double rZ = configuration[figure]["rotateZ"].as_double_or_die();
+        vector<double> center = configuration[figure]["center"].as_double_tuple_or_die();
+        vector<double> color = configuration[figure]["color"].as_double_tuple_or_die();
+        Color c = Color(color[0], color[1], color[2]);
+        Figure newfigure = Figure(color);
+        //---------------------------
+        if (type == "LineDrawing") {
+            int nrPoints = configuration[figure]["nrPoints"].as_int_or_die();
+            int nrLines = configuration[figure]["nrLines"].as_int_or_die();
+            for (int p = 0; p < nrPoints; p++) {
+                newfigure.addPoint(configuration[figure]["point" + to_string(p)].as_double_tuple_or_die());
+            }
+            for (int l = 0; l < nrLines; l++) {
+                newfigure.addFace(configuration[figure]["line" + to_string(l)].as_int_tuple_or_die());
+            }
+        }
+        //---------------------------
+        if (type == "Cube" or type == "Tetrahedron" or type == "Octahedron" or type == "Icosahedron" or type == "Dodecahedron") {
+            newfigure = createPlatonicSolid(type, c);
+        }
+            //---------------------------
+        else if (type == "Sphere") {
+            newfigure = createSphere(c, configuration[figure]["n"].as_int_or_die());
+        }
+            //---------------------------
+        else if (type == "Cone") {
+            newfigure = createCone(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
+        }
+            //---------------------------
+        else if (type == "Cylinder") {
+            newfigure = createCylinder(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
+        }
+            //---------------------------
+        else if (type == "Torus") {
+            newfigure = createTorus(c, configuration[figure]["r"].as_double_or_die(), configuration[figure]["R"].as_double_or_die(),
+                                    configuration[figure]["n"].as_int_or_die(), configuration[figure]["m"].as_int_or_die(), false);
+        }
+            //---------------------------
+        else if (type == "3DLSystem") {
+            string input = configuration[figure]["inputfile"].as_string_or_die();
+            L_System_3D lsystem3D(input, c);
+            newfigure = lsystem3D.generateFigure();
+        }
+        //---------------------------
+        newfigure.applyTransformation(newfigure.scaleFigure(scale));
+        newfigure.applyTransformation(newfigure.rotateX(rX));
+        newfigure.applyTransformation(newfigure.rotateY(rY));
+        newfigure.applyTransformation(newfigure.rotateZ(rZ));
+        newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+        Lines2D newlines = newfigure.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+        lines.insert(lines.end(), newlines.begin(), newlines.end());
+    }
+
+    int size = configuration["General"]["size"].as_int_or_die();
+    vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
+    vector<double> max = img::getMax(lines);
+    img::EasyImage image((int) round(max[4] * size), (int) round(max[5] * size),
+                         img::Color((int) round(background[0] * 255), (int) round(background[1] * 255),
+                                    (int) round(background[2] * 255)));
+
+    image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3], imagetype == "ZBufferedWireframe");
+    return image;
+}
+
+img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configuration) {
+    Figures3D figures3D;
+    Lines2D lines;
+    string imagetype = configuration["General"]["type"].as_string_or_die();
+    vector<double> eye = configuration["General"]["eye"].as_double_tuple_or_die();
+    int nrFigures = configuration["General"]["nrFigures"].as_int_or_die();
+    for (int i = 0; i<nrFigures; i++) {
+        string figure = "Figure" + to_string(i);
+        string type = configuration[figure]["type"].as_string_or_die();
+        double scale = configuration[figure]["scale"].as_double_or_die();
+        double rX = configuration[figure]["rotateX"].as_double_or_die();
+        double rY = configuration[figure]["rotateY"].as_double_or_die();
+        double rZ = configuration[figure]["rotateZ"].as_double_or_die();
+        vector<double> center = configuration[figure]["center"].as_double_tuple_or_die();
+        vector<double> color = configuration[figure]["color"].as_double_tuple_or_die();
+        Color c = Color(color[0], color[1], color[2]);
+        Figure newfigure = Figure(color);
+        //---------------------------
+        if (type == "Cube" or type == "Tetrahedron" or type == "Octahedron" or type == "Icosahedron" or type == "Dodecahedron") {
+            newfigure = createPlatonicSolid(type, c);
+        }
+        //---------------------------
+        else if (type == "Sphere") {
+            newfigure = createSphere(c, configuration[figure]["n"].as_int_or_die());
+        }
+        //---------------------------
+        else if (type == "Cone") {
+            newfigure = createCone(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
+        }
+        //---------------------------
+        else if (type == "Cylinder") {
+            std::cout << configuration[figure]["n"].as_int_or_die() << std::endl;
+            newfigure = createCylinder(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
+        }
+        //---------------------------
+        else if (type == "Torus") {
+            newfigure = createTorus(c, configuration[figure]["r"].as_double_or_die(), configuration[figure]["R"].as_double_or_die(),
+                                    configuration[figure]["n"].as_int_or_die(), configuration[figure]["m"].as_int_or_die(), true);
+        }
+        //---------------------------
+        if (type == "Cube" or type == "Dodecahedron" or type == "Cone" or type == "Cylinder") {
+            newfigure.triangulate();
+        }
+        newfigure.applyTransformation(newfigure.scaleFigure(scale));
+        newfigure.applyTransformation(newfigure.rotateX(rX));
+        newfigure.applyTransformation(newfigure.rotateY(rY));
+        newfigure.applyTransformation(newfigure.rotateZ(rZ));
+        newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+        Lines2D newlines = newfigure.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+        figures3D.push_back(newfigure);
+        lines.insert(lines.end(), newlines.begin(), newlines.end());
+    }
+    int size = configuration["General"]["size"].as_int_or_die();
+    vector<double> max = img::getMax(lines);
+    lines.clear();
+    vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
+    img::EasyImage image((int) round(max[4] * size), (int) round(max[5] * size),
+                         img::Color((int) round(background[0] * 255), (int) round(background[1] * 255),
+                                    (int) round(background[2] * 255)));
+    ZBuffer buf = ZBuffer(image.get_width(), image.get_height());
+    double Xmax = max[1];
+    double Xmin = max[0];
+    double Ymax = max[3];
+    double Ymin = max[2];
+    double Xratio = max[4];
+    double Yratio = max[5];
+    double ImageX = size * Xratio;
+    double ImageY = size * Yratio;
+    double d = 0.95*(ImageX/(Xmax-Xmin));
+    double DCx = d*(Xmin+Xmax)/2;
+    double DCy = d*(Ymin+Ymax)/2;
+    double dx = ImageX/2 - DCx;
+    double dy = ImageY/2 - DCy;
+    for (auto& figure:figures3D) {
+        figure.draw_zbuf_triag(buf, image, d, dx, dy);
+    }
+    //image.draw2Dlines(lines, size, Xmin, Xmax, Ymin, Ymax, false);
+    return image;
+}
+
+
 img::EasyImage generate_image(const ini::Configuration &configuration) {
-   bool check = false;
-   Lines2D lines;
-    //--------------------------------------------------------------------------------------
-   if (configuration["General"]["type"].as_string_or_die() == "2DLSystem") {
-       check = true;
-       vector<double> color = configuration["2DLSystem"]["color"].as_double_tuple_or_die();
-       string input = configuration["2DLSystem"]["inputfile"].as_string_or_die();
-       L_System lSystem = L_System(input, Color(color[0],color[1],color[2]));
-       lines = lSystem.generateLines();
+   string imagetype = configuration["General"]["type"].as_string_or_die();
+   if (imagetype == "2DLSystem") {
+       return generate_2DLsystem(configuration);
    }
-   //--------------------------------------------------------------------------------------
-   else if (configuration["General"]["type"].as_string_or_die() == "Wireframe" or configuration["General"]["type"].as_string_or_die() == "ZBufferedWireframe") {
-       check = true;
-       vector<double> eye = configuration["General"]["eye"].as_double_tuple_or_die();
-       int nrFigures = configuration["General"]["nrFigures"].as_int_or_die();
-
-       for (int i = 0; i<nrFigures; i++) {
-           string figure = "Figure" + to_string(i);
-           string type = configuration[figure]["type"].as_string_or_die();
-           double scale = configuration[figure]["scale"].as_double_or_die();
-           double rX = configuration[figure]["rotateX"].as_double_or_die();
-           double rY = configuration[figure]["rotateY"].as_double_or_die();
-           double rZ = configuration[figure]["rotateZ"].as_double_or_die();
-           vector<double> center = configuration[figure]["center"].as_double_tuple_or_die();
-           vector<double> color = configuration[figure]["color"].as_double_tuple_or_die();
-           Color c = Color(color[0], color[1], color[2]);
-           Figure newfigure = Figure(color);
-           //---------------------------
-           if (type == "LineDrawing") {
-               int nrPoints = configuration[figure]["nrPoints"].as_int_or_die();
-               int nrLines = configuration[figure]["nrLines"].as_int_or_die();
-               for (int p = 0; p < nrPoints; p++) {
-                   newfigure.addPoint(configuration[figure]["point" + to_string(p)].as_double_tuple_or_die());
-               }
-               for (int l = 0; l < nrLines; l++) {
-                   newfigure.addFace(configuration[figure]["line" + to_string(l)].as_int_tuple_or_die());
-               }
-           }
-           //---------------------------
-           if (type == "Cube" or type == "Tetrahedron" or type == "Octahedron" or type == "Icosahedron" or type == "Dodecahedron") {
-               newfigure = createPlatonicSolid(type, c);
-           }
-           //---------------------------
-           else if (type == "Sphere") {
-               newfigure = createSphere(c, configuration[figure]["n"].as_int_or_die());
-           }
-           //---------------------------
-           else if (type == "Cone") {
-               newfigure = createCone(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
-           }
-           //---------------------------
-           else if (type == "Cylinder") {
-               newfigure = createCylinder(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
-           }
-           //---------------------------
-           else if (type == "Torus") {
-               newfigure = createTorus(c, configuration[figure]["r"].as_double_or_die(), configuration[figure]["R"].as_double_or_die(),
-                                       configuration[figure]["n"].as_int_or_die(), configuration[figure]["m"].as_int_or_die());
-           }
-           //---------------------------
-           else if (type == "3DLSystem") {
-               string input = configuration[figure]["inputfile"].as_string_or_die();
-               L_System_3D lsystem3D(input, c);
-               newfigure = lsystem3D.generateFigure();
-           }
-           //---------------------------
-           newfigure.triangulate();
-           newfigure.applyTransformation(newfigure.scaleFigure(scale));
-           newfigure.applyTransformation(newfigure.rotateX(rX));
-           newfigure.applyTransformation(newfigure.rotateY(rY));
-           newfigure.applyTransformation(newfigure.rotateZ(rZ));
-           newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
-           Lines2D newlines = newfigure.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
-           lines.insert(lines.end(), newlines.begin(), newlines.end());
-       }
+   else if (imagetype == "Wireframe" or imagetype == "ZBufferedWireframe") {
+       return generate_Wireframe(configuration);
    }
-   //--------------------------------------------------------------------------------------
-
-   if (check) {
-       int size = configuration["General"]["size"].as_int_or_die();
-       vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
-       vector<double> max = img::getMax(lines);
-       img::EasyImage image((int) round(max[4] * size), (int) round(max[5] * size),
-               img::Color((int) round(background[0] * 255), (int) round(background[1] * 255),
-                                       (int) round(background[2] * 255)));
-       image.draw2Dlines(lines, size, max[0], max[1], max[2], max[3], configuration["General"]["type"].as_string_or_die() == "ZBufferedWireframe");
-       return image;
+   else if (imagetype == "ZBuffering") {
+       return generate_ZBufferingDriehoeken(configuration);
    }
    return img::EasyImage();
 }

@@ -4,6 +4,7 @@
 #include <list>
 #include "../vector3d/vector3d.h"
 #include "../2D_Lines/line_structs.cpp"
+#include "../easy_image/easy_image.h"
 
 struct Face {
     //De indexen refereren naar
@@ -38,6 +39,7 @@ public:
     void toPolar(const Vector3D &point, double &theta, double &phi, double &r);
     Lines2D doProjection(const Vector3D& eyepoint, const double d);
     Point2D doProjection(const double d, const Vector3D& point);
+    void draw_zbuf_triag(ZBuffer& buf, img::EasyImage& image, double d, double dx, double dy);
 };
 
 Figure createCube(Color c);
@@ -58,10 +60,14 @@ Figure createCone(Color c, const int n, const double h);
 
 Figure createCylinder(Color c, const int n, const double h);
 
-Figure createTorus(Color c, const double r, const double R, const int n, const int m);
+Figure createTorus(Color c, const double r, const double R, const int n, const int m, bool triangulate);
 
 Vector3D createTorusPoint(double r, double R, const double u, const double v);
 
-typedef std::list<Figure> Figures3D;
+double getMin(double a, double b, double c);
+
+double getMax(double a, double b, double c);
+
+typedef std::vector<Figure> Figures3D;
 
 #endif //ENGINE_FIGURE_H
