@@ -132,7 +132,6 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
         }
         //---------------------------
         else if (type == "Cylinder") {
-            std::cout << configuration[figure]["n"].as_int_or_die() << std::endl;
             newfigure = createCylinder(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
         }
         //---------------------------
@@ -152,15 +151,19 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
         Lines2D newlines = newfigure.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
         figures3D.push_back(newfigure);
         lines.insert(lines.end(), newlines.begin(), newlines.end());
+
     }
+
     int size = configuration["General"]["size"].as_int_or_die();
     vector<double> max = img::getMax(lines);
     lines.clear();
     vector<double> background = configuration["General"]["backgroundcolor"].as_double_tuple_or_die();
+
     img::EasyImage image((int) round(max[4] * size), (int) round(max[5] * size),
                          img::Color((int) round(background[0] * 255), (int) round(background[1] * 255),
                                     (int) round(background[2] * 255)));
     ZBuffer buf = ZBuffer(image.get_width(), image.get_height());
+
     double Xmax = max[1];
     double Xmin = max[0];
     double Ymax = max[3];
@@ -177,7 +180,7 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
     for (auto& figure:figures3D) {
         figure.draw_zbuf_triag(buf, image, d, dx, dy);
     }
-    //image.draw2Dlines(lines, size, Xmin, Xmax, Ymin, Ymax, false);
+
     return image;
 }
 
@@ -197,6 +200,7 @@ img::EasyImage generate_image(const ini::Configuration &configuration) {
 }
 
 int main(int argc, char const* argv[])
+
 {
         int retVal = 0;
         try

@@ -163,6 +163,9 @@ void Figure::triangulate() {
                         Face({faces[0].point_indexes[0], faces[0].point_indexes[i], faces[0].point_indexes[i + 1]}));
             }
         }
+        else {
+            newFaces.push_back(faces[0]);
+        }
         faces.erase(faces.begin());
     }
     faces = newFaces;
@@ -415,11 +418,15 @@ Figure createPlatonicSolid(std::string type, Color c) {
 //Works
 Figure createCone(Color c, const int n, const double h) {
     Figure newFigure(c);
+    std::vector<int> lastFace;
     for (int i=0; i<n; i++) {
         newFigure.addPoint(Vector3D::point(cos(2*i*PI/n),sin(2*i*PI/n),0));
         newFigure.addFace({i, (i+1)%n , n});
+        lastFace.push_back(i);
     }
     newFigure.addPoint(Vector3D::point(0,0,h));
+    newFigure.addFace(lastFace);
+
 
     return newFigure;
 }
@@ -436,18 +443,15 @@ Figure createCylinder(Color c, const int n, const double h) {
         index += 2;
     }
 
-    newFigure.addFace({});
-    newFigure.addFace({});
-    int size = newFigure.getPoints().size();
-    int facessize = newFigure.getFaces().size();
-    for (int i=0; i < size; i+=2) {
-        newFigure.getFaces()[facessize].point_indexes.push_back(i);
-        newFigure.getFaces()[facessize+1].point_indexes.push_back(i+1);
+    std::vector<int> upface;
+    std::vector<int> downface;
+
+    for (int i=0; i < 2*n; i+=2) {
+        upface.push_back(i);
+        downface.push_back(i+1);
     }
-    //std::cout << newFigure.getFaces()[facessize].point_indexes.size() << std::endl;
-    //std::cout << newFigure.getFaces()[facessize+1].point_indexes.size() << std::endl;
-    std::cout << " " << std::endl;
-    //std::cout << "bug" << std::endl;
+    newFigure.addFace(upface);
+    newFigure.addFace(downface);
     return newFigure;
 }
 
