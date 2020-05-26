@@ -159,8 +159,7 @@ void Figure::triangulate() {
     while (!faces.empty()) {
         if (faces[0].point_indexes.size() > 3) {
             for (int i = 1; i < (int) faces[0].point_indexes.size() - 1; i++) {
-                newFaces.push_back(
-                        Face({faces[0].point_indexes[0], faces[0].point_indexes[i], faces[0].point_indexes[i + 1]}));
+                newFaces.push_back(Face({faces[0].point_indexes[0], faces[0].point_indexes[i], faces[0].point_indexes[i + 1]}));
             }
         }
         else {
