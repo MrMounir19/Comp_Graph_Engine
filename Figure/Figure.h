@@ -70,4 +70,9 @@ double getMax(double a, double b, double c);
 
 typedef std::vector<Figure> Figures3D;
 
+Figures3D generateFractal(Figure& fig, const int nr_iterations, const double scale);
+
+
+
+
 #endif //ENGINE_FIGURE_H

@@ -489,3 +489,20 @@ double getMax(double a, double b, double c) {
     double maximum = std::max(a,b);
     return std::max(maximum, c);
 }
+
+Figures3D generateFractal(Figure& fig, const int nr_iterations, const double scale) {
+    Figures3D figures = {fig};
+    for (int i=0; i < nr_iterations; i++) {
+        Figures3D newFigures;
+        for (auto figure:figures) {
+            for (unsigned int j = 0; j < figure.getPoints().size(); j++) {
+                Figure newFigure = figure;
+                newFigure.applyTransformation(newFigure.scaleFigure(1/scale));
+                newFigure.applyTransformation(newFigure.translate(figure.getPoints()[j]-newFigure.getPoints()[j]));
+                newFigures.push_back(newFigure);
+            }
+        }
+        figures = newFigures;
+    }
+    return figures;
+}

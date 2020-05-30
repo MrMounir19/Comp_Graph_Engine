@@ -80,7 +80,24 @@ img::EasyImage generate_Wireframe(const ini::Configuration &configuration) {    
             L_System_3D lsystem3D(input, c);
             newfigure = lsystem3D.generateFigure();
         }
+        else if (type == "FractalCube" or type == "FractalTetrahedron" or type == "FractalOctahedron" or type == "FractalIcosahedron" or type == "FractalDodecahedron") {
+            newfigure = createPlatonicSolid(type.substr(7,type.size()-7), c);
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+            int nrIterations = configuration[figure]["nrIterations"].as_int_or_die();
+            int fractalScale = configuration[figure]["fractalScale"].as_int_or_die();
+            Figures3D newFigures = generateFractal(newfigure, nrIterations, fractalScale);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+            }
+            continue;
+        }
         //---------------------------
+
         newfigure.applyTransformation(newfigure.scaleFigure(scale));
         newfigure.applyTransformation(newfigure.rotateX(rX));
         newfigure.applyTransformation(newfigure.rotateY(rY));
@@ -140,9 +157,30 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
                                     configuration[figure]["n"].as_int_or_die(), configuration[figure]["m"].as_int_or_die(), true);
         }
         //---------------------------
+        else if (type == "FractalCube" or type == "FractalTetrahedron" or type == "FractalOctahedron" or type == "FractalIcosahedron" or type == "FractalDodecahedron") {
+            newfigure = createPlatonicSolid(type.substr(7,type.size()-7), c);
+            if (type == "FractalCube" or type == "FractalDodecahedron") {
+                newfigure.triangulate();
+            }
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+            int nrIterations = configuration[figure]["nrIterations"].as_int_or_die();
+            int fractalScale = configuration[figure]["fractalScale"].as_int_or_die();
+            Figures3D newFigures = generateFractal(newfigure, nrIterations, fractalScale);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+                figures3D.push_back(fig);
+            }
+            continue;
+        }
         if (type == "Cube" or type == "Dodecahedron" or type == "Cone" or type == "Cylinder") {
             newfigure.triangulate();
         }
+
         newfigure.applyTransformation(newfigure.scaleFigure(scale));
         newfigure.applyTransformation(newfigure.rotateX(rX));
         newfigure.applyTransformation(newfigure.rotateY(rY));
@@ -151,7 +189,6 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
         Lines2D newlines = newfigure.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
         figures3D.push_back(newfigure);
         lines.insert(lines.end(), newlines.begin(), newlines.end());
-
     }
 
     int size = configuration["General"]["size"].as_int_or_die();
@@ -184,7 +221,6 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
     return image;
 }
 
-
 img::EasyImage generate_image(const ini::Configuration &configuration) {
    string imagetype = configuration["General"]["type"].as_string_or_die();
    if (imagetype == "2DLSystem") {
@@ -198,6 +234,8 @@ img::EasyImage generate_image(const ini::Configuration &configuration) {
    }
    return img::EasyImage();
 }
+
+
 
 int main(int argc, char const* argv[])
 
