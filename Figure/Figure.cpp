@@ -221,6 +221,10 @@ void Figure::draw_zbuf_triag(ZBuffer &buf, img::EasyImage &image, double d, doub
     }
 }
 
+const Color &Figure::getColor() const {
+    return color;
+}
+
 
 //Works
 Figure createCube(Color c) {
@@ -505,4 +509,64 @@ Figures3D generateFractal(Figure& fig, const int nr_iterations, const double sca
         figures = newFigures;
     }
     return figures;
+}
+
+Figures3D generateThickFigures(Figure& fig, double r, int n, int m, bool triangulatie, bool lijntekening) {
+    Figures3D newFigures;
+    for (auto point:fig.getPoints()) {
+        Figure newBol = createSphere(fig.getColor(), m);
+        newBol.applyTransformation(newBol.scaleFigure(r));
+        newBol.applyTransformation(newBol.translate(point));
+        newFigures.push_back(newBol);
+    }
+    if (lijntekening) {
+        for (auto face:fig.getFaces()) {
+            for (unsigned int i = 0; i < face.point_indexes.size()-1; i++) {
+                Vector3D PointA = fig.getPoints()[face.point_indexes[i]];
+                Vector3D PointB = fig.getPoints()[face.point_indexes[(i + 1)]];
+                double hoogte = sqrt(
+                        (pow(PointB.x - PointA.x, 2) + pow(PointB.y - PointA.y, 2) + pow(PointB.z - PointA.z, 2)))/r;
+                Figure newCylinder = createCylinder(fig.getColor(), n, hoogte);
+                newCylinder.applyTransformation(newCylinder.scaleFigure(r));
+                Vector3D Pr = Vector3D::vector(0, 0, 0) + (PointB - PointA);
+                double w, t, f;
+                newCylinder.toPolar(Pr, w, t, f);
+                w = w * 180.0 / PI;
+                t = t * 180.0 / PI;
+                newCylinder.applyTransformation(newCylinder.rotateY(t));
+                newCylinder.applyTransformation(newCylinder.rotateZ(w));
+                newCylinder.applyTransformation(newCylinder.translate(PointA));
+                if (triangulatie) {
+                    newCylinder.triangulate();
+                }
+                newFigures.push_back(newCylinder);
+            }
+        }
+    }
+
+    else {
+        for (auto face:fig.getFaces()) {
+            for (unsigned int i = 0; i < face.point_indexes.size(); i++) {
+                Vector3D PointA = fig.getPoints()[face.point_indexes[i]];
+                Vector3D PointB = fig.getPoints()[face.point_indexes[(i + 1) % face.point_indexes.size()]];
+                double hoogte = sqrt(
+                        (pow(PointB.x - PointA.x, 2) + pow(PointB.y - PointA.y, 2) + pow(PointB.z - PointA.z, 2)))/r;
+                Figure newCylinder = createCylinder(fig.getColor(), n, hoogte);
+                newCylinder.applyTransformation(newCylinder.scaleFigure(r));
+                Vector3D Pr = Vector3D::vector(0, 0, 0) + (PointB - PointA);
+                double w, t, f;
+                newCylinder.toPolar(Pr, w, t, f);
+                w = w * 180.0 / PI;
+                t = t * 180.0 / PI;
+                newCylinder.applyTransformation(newCylinder.rotateY(t));
+                newCylinder.applyTransformation(newCylinder.rotateZ(w));
+                newCylinder.applyTransformation(newCylinder.translate(PointA));
+                if (triangulatie) {
+                    newCylinder.triangulate();
+                }
+                newFigures.push_back(newCylinder);
+            }
+        }
+    }
+    return newFigures;
 }

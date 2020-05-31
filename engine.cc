@@ -54,7 +54,7 @@ img::EasyImage generate_Wireframe(const ini::Configuration &configuration) {    
             }
         }
         //---------------------------
-        if (type == "Cube" or type == "Tetrahedron" or type == "Octahedron" or type == "Icosahedron" or type == "Dodecahedron") {
+        else if (type == "Cube" or type == "Tetrahedron" or type == "Octahedron" or type == "Icosahedron" or type == "Dodecahedron") {
             newfigure = createPlatonicSolid(type, c);
         }
             //---------------------------
@@ -88,13 +88,76 @@ img::EasyImage generate_Wireframe(const ini::Configuration &configuration) {    
             newfigure.applyTransformation(newfigure.rotateZ(rZ));
             newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
             int nrIterations = configuration[figure]["nrIterations"].as_int_or_die();
-            int fractalScale = configuration[figure]["fractalScale"].as_int_or_die();
+            double fractalScale = configuration[figure]["fractalScale"].as_double_or_die();
             Figures3D newFigures = generateFractal(newfigure, nrIterations, fractalScale);
             for (auto fig:newFigures) {
                 Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
                 lines.insert(lines.end(), newlines.begin(), newlines.end());
             }
             continue;
+        }
+        else if (type == "ThickCube" or type == "ThickTetrahedron" or type == "ThickOctahedron" or type == "ThickIcosahedron" or type == "ThickDodecahedron") {
+            newfigure = createPlatonicSolid(type.substr(5,type.size()-5), c);
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            double r = configuration[figure]["radius"].as_double_or_die();
+            int n = configuration[figure]["n"].as_int_or_die();
+            int m = configuration[figure]["m"].as_int_or_die();
+            Figures3D newFigures = generateThickFigures(newfigure, r, n, m, false, false);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+            }
+            continue;
+        }
+        else if (type == "ThickLineDrawing") {
+            int nrPoints = configuration[figure]["nrPoints"].as_int_or_die();
+            int nrLines = configuration[figure]["nrLines"].as_int_or_die();
+            for (int p = 0; p < nrPoints; p++) {
+                newfigure.addPoint(configuration[figure]["point" + to_string(p)].as_double_tuple_or_die());
+            }
+            for (int l = 0; l < nrLines; l++) {
+                newfigure.addFace(configuration[figure]["line" + to_string(l)].as_int_tuple_or_die());
+            }
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+            double r = configuration[figure]["radius"].as_double_or_die();
+            int n = configuration[figure]["n"].as_int_or_die();
+            int m = configuration[figure]["m"].as_int_or_die();
+            Figures3D newFigures = generateThickFigures(newfigure, r, n, m, false, true);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+            }
+            continue;
+        }
+        else if (type == "Thick3DLSystem") {
+            string input = configuration[figure]["inputfile"].as_string_or_die();
+            L_System_3D lsystem3D(input, c);
+            newfigure = lsystem3D.generateFigure();
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+            double r = configuration[figure]["radius"].as_double_or_die();
+            int n = configuration[figure]["n"].as_int_or_die();
+            int m = configuration[figure]["m"].as_int_or_die();
+            Figures3D newFigures = generateThickFigures(newfigure, r, n, m, false, true);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+            }
+            continue;
+        }
+
+        else {
+            return img::EasyImage();
         }
         //---------------------------
 
@@ -138,6 +201,9 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
         //---------------------------
         if (type == "Cube" or type == "Tetrahedron" or type == "Octahedron" or type == "Icosahedron" or type == "Dodecahedron") {
             newfigure = createPlatonicSolid(type, c);
+            if (type == "Cube" or type == "Dodecahedron") {
+                newfigure.triangulate();
+            }
         }
         //---------------------------
         else if (type == "Sphere") {
@@ -146,10 +212,12 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
         //---------------------------
         else if (type == "Cone") {
             newfigure = createCone(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
+            newfigure.triangulate();
         }
         //---------------------------
         else if (type == "Cylinder") {
             newfigure = createCylinder(c, configuration[figure]["n"].as_int_or_die(), configuration[figure]["height"].as_double_or_die());
+            newfigure.triangulate();
         }
         //---------------------------
         else if (type == "Torus") {
@@ -168,7 +236,7 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
             newfigure.applyTransformation(newfigure.rotateZ(rZ));
             newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
             int nrIterations = configuration[figure]["nrIterations"].as_int_or_die();
-            int fractalScale = configuration[figure]["fractalScale"].as_int_or_die();
+            double fractalScale = configuration[figure]["fractalScale"].as_double_or_die();
             Figures3D newFigures = generateFractal(newfigure, nrIterations, fractalScale);
             for (auto fig:newFigures) {
                 Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
@@ -177,8 +245,70 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
             }
             continue;
         }
-        if (type == "Cube" or type == "Dodecahedron" or type == "Cone" or type == "Cylinder") {
-            newfigure.triangulate();
+        else if (type == "ThickCube" or type == "ThickTetrahedron" or type == "ThickOctahedron" or type == "ThickIcosahedron" or type == "ThickDodecahedron") {
+            newfigure = createPlatonicSolid(type.substr(5,type.size()-5), c);
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            double r = configuration[figure]["radius"].as_double_or_die();
+            int n = configuration[figure]["n"].as_int_or_die();
+            int m = configuration[figure]["m"].as_int_or_die();
+            Figures3D newFigures = generateThickFigures(newfigure, r, n, m, true, false);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+                figures3D.push_back(fig);
+            }
+            continue;
+        }
+        else if (type == "ThickLineDrawing") {
+            int nrPoints = configuration[figure]["nrPoints"].as_int_or_die();
+            int nrLines = configuration[figure]["nrLines"].as_int_or_die();
+            for (int p = 0; p < nrPoints; p++) {
+                newfigure.addPoint(configuration[figure]["point" + to_string(p)].as_double_tuple_or_die());
+            }
+            for (int l = 0; l < nrLines; l++) {
+                newfigure.addFace(configuration[figure]["line" + to_string(l)].as_int_tuple_or_die());
+            }
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+            double r = configuration[figure]["radius"].as_double_or_die();
+            int n = configuration[figure]["n"].as_int_or_die();
+            int m = configuration[figure]["m"].as_int_or_die();
+            Figures3D newFigures = generateThickFigures(newfigure, r, n, m, true, true);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+                figures3D.push_back(fig);
+            }
+            continue;
+        }
+        else if (type == "Thick3DLSystem") {
+            string input = configuration[figure]["inputfile"].as_string_or_die();
+            L_System_3D lsystem3D(input, c);
+            newfigure = lsystem3D.generateFigure();
+            newfigure.applyTransformation(newfigure.scaleFigure(scale));
+            newfigure.applyTransformation(newfigure.rotateX(rX));
+            newfigure.applyTransformation(newfigure.rotateY(rY));
+            newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
+            double r = configuration[figure]["radius"].as_double_or_die();
+            int n = configuration[figure]["n"].as_int_or_die();
+            int m = configuration[figure]["m"].as_int_or_die();
+            Figures3D newFigures = generateThickFigures(newfigure, r, n, m, true, true);
+            for (auto fig:newFigures) {
+                Lines2D newlines = fig.doProjection(Vector3D::point(eye[0], eye[1], eye[2]), 1);
+                lines.insert(lines.end(), newlines.begin(), newlines.end());
+                figures3D.push_back(fig);
+            }
+            continue;
+        }
+        else {
+            return img::EasyImage();
         }
 
         newfigure.applyTransformation(newfigure.scaleFigure(scale));

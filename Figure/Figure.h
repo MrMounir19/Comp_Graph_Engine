@@ -20,6 +20,9 @@ private:
     std::vector<Face> faces;
     Color color;
 public:
+    const Color &getColor() const;
+
+public:
     Figure(Color c) : color(c) {}
     void addPoint(std::vector<double> point);
     void addFace(std::vector<int> indexes);
@@ -72,6 +75,7 @@ typedef std::vector<Figure> Figures3D;
 
 Figures3D generateFractal(Figure& fig, const int nr_iterations, const double scale);
 
+Figures3D generateThickFigures(Figure& fig, double r, int n, int m, bool triangulatie, bool lijntekening);
 
 
 
