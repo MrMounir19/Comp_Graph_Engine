@@ -102,6 +102,7 @@ img::EasyImage generate_Wireframe(const ini::Configuration &configuration) {    
             newfigure.applyTransformation(newfigure.rotateX(rX));
             newfigure.applyTransformation(newfigure.rotateY(rY));
             newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
             double r = configuration[figure]["radius"].as_double_or_die();
             int n = configuration[figure]["n"].as_int_or_die();
             int m = configuration[figure]["m"].as_int_or_die();
@@ -251,6 +252,7 @@ img::EasyImage generate_ZBufferingDriehoeken(const ini::Configuration &configura
             newfigure.applyTransformation(newfigure.rotateX(rX));
             newfigure.applyTransformation(newfigure.rotateY(rY));
             newfigure.applyTransformation(newfigure.rotateZ(rZ));
+            newfigure.applyTransformation(newfigure.translate(Vector3D::vector(center[0], center[1], center[2])));
             double r = configuration[figure]["radius"].as_double_or_die();
             int n = configuration[figure]["n"].as_int_or_die();
             int m = configuration[figure]["m"].as_int_or_die();

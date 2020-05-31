@@ -7,3 +7,4 @@
 - Z-Buffering met lijnen :heavy_check_mark:
 - Z-Buffering met driehoeken :heavy_check_mark:
 - 3D Fractalen :heavy_check_mark:
+- Bollen en Cilinders :heavy_check_mark:
